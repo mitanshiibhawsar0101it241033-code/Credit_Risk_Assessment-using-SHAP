@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loan Risk Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<main class="shell">
+  <header class="intro">
+    <h1>Will this loan be repaid?</h1>
+    <p>Enter the applicant's details. The model estimates the chance of default and compares it with the lender's cut-off.</p>
+  </header>
+
+  <div class="layout">
+    <form id="form" class="panel" novalidate>
+      <fieldset>
+        <legend>Applicant</legend>
+        <label>Age<input name="person_age" type="number" min="18" max="100" value="28" required></label>
+        <label>Annual income (₹ / $)<input name="person_income" id="income" type="number" min="1" step="any" value="60000" required></label>
+        <label>Home ownership
+          <select name="person_home_ownership">
+            <option>RENT</option><option>OWN</option><option>MORTGAGE</option><option>OTHER</option>
+          </select>
+        </label>
+        <label>Years employed<input name="person_emp_length" type="number" min="0" step="1" value="4" required></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Loan</legend>
+        <label>Purpose
+          <select name="loan_intent">
+            <option value="PERSONAL">Personal</option>
+            <option value="EDUCATION">Education</option>
+            <option value="MEDICAL">Medical</option>
+            <option value="VENTURE">Venture</option>
+            <option value="HOMEIMPROVEMENT">Home improvement</option>
+            <option value="DEBTCONSOLIDATION">Debt consolidation</option>
+          </select>
+        </label>
+        <label>Loan grade
+          <select name="loan_grade"><option>A</option><option selected>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option></select>
+        </label>
+        <label>Loan amount<input name="loan_amnt" id="amount" type="number" min="1" step="any" value="12000" required></label>
+        <label>Interest rate (%)<input name="loan_int_rate" type="number" min="0" step="0.01" value="11.5" required></label>
+        <label class="wide">Loan as share of income
+          <output id="pct">0.20</output>
+          <span class="hint">Worked out from the amount and income above.</span>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Credit history</legend>
+        <label>Credit history length (years)<input name="cb_person_cred_hist_length" type="number" min="0" step="1" value="5" required></label>
+        <div class="seg-wrap">
+          <span class="seg-label">Past default on file</span>
+          <div class="seg" role="radiogroup">
+            <input type="radio" id="d-n" name="cb_person_default_on_file" value="N" checked><label for="d-n">No</label>
+            <input type="radio" id="d-y" name="cb_person_default_on_file" value="Y"><label for="d-y">Yes</label>
+          </div>
+        </div>
+      </fieldset>
+
+      <button id="submit" type="submit"><span class="btn-text">Check risk</span><span class="spinner" aria-hidden="true"></span></button>
+    </form>
+
+    <aside class="panel result" id="result" data-state="idle" aria-live="polite">
+      <svg class="gauge" viewBox="0 0 220 130" role="img" aria-label="Default probability gauge">
+        <path class="track" d="M20 110 A90 90 0 0 1 200 110"/>
+        <path class="fill" id="fill" d="M20 110 A90 90 0 0 1 200 110"/>
+        <line id="tick" class="tick" x1="0" y1="0" x2="0" y2="0"/>
+      </svg>
+      <div class="readout">
+        <div class="pct"><span id="num">–</span><small>%</small></div>
+        <div class="sub">chance of default</div>
+      </div>
+      <h2 id="verdict">Waiting for details</h2>
+      <p id="detail">Fill in the form and choose Check risk.</p>
+      <p class="cutoff" id="cutoff" hidden></p>
+    </aside>
+  </div>
+</main>
+<script src="/static/script.js"></script>
+</body>
+</html>

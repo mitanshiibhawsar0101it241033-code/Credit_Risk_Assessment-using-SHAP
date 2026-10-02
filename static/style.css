@@ -1,0 +1,64 @@
+:root{
+  --bg:#0d1b2a; --panel:#13263b; --line:#24405c; --ink:#e8eef5; --muted:#8fa5bb;
+  --low:#4cc39a; --high:#ee6a55; --accent:#7fb7e6;
+  --serif:'Fraunces',Georgia,serif; --sans:'Manrope',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;min-height:100vh;
+  background-image:radial-gradient(60rem 30rem at 85% -10%,#173556 0%,transparent 60%)}
+.shell{max-width:1060px;margin:0 auto;padding:56px 24px 72px}
+.intro{margin-bottom:36px;max-width:560px}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(2rem,4.5vw,3rem);line-height:1.1;letter-spacing:-.02em}
+.intro p{color:var(--muted);margin-top:12px}
+.layout{display:grid;grid-template-columns:1.25fr 1fr;gap:24px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:28px}
+fieldset{border:0;padding:0;margin:0 0 26px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+legend{font-family:var(--serif);font-size:1.15rem;margin-bottom:14px;padding:0;float:left;width:100%}
+legend+*{clear:both}
+label,.seg-wrap{display:flex;flex-direction:column;gap:6px;font-size:.88rem;color:var(--muted)}
+.wide{grid-column:1/-1}
+input,select{background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:10px;
+  padding:11px 12px;font:inherit;font-size:1rem;transition:border-color .2s,box-shadow .2s;width:100%}
+input:hover,select:hover{border-color:#34597d}
+input:focus-visible,select:focus-visible,button:focus-visible,.seg input:focus-visible+label{
+  outline:2px solid var(--accent);outline-offset:2px;border-color:var(--accent)}
+input.bad{border-color:var(--high)}
+output{font-size:1.05rem;color:var(--ink);font-weight:600}
+.hint{font-size:.78rem}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:3px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{padding:8px;text-align:center;border-radius:8px;cursor:pointer;color:var(--muted);transition:background .2s,color .2s}
+.seg input:checked+label{background:var(--accent);color:#0d1b2a;font-weight:600}
+button{width:100%;position:relative;border:0;border-radius:12px;padding:15px;font:600 1rem var(--sans);
+  background:var(--ink);color:var(--bg);cursor:pointer;transition:transform .15s,opacity .2s}
+button:hover{transform:translateY(-1px)}button:active{transform:translateY(0)}
+button[disabled]{opacity:.7;cursor:progress}
+.spinner{display:none;width:18px;height:18px;border:2px solid #0d1b2a55;border-top-color:var(--bg);border-radius:50%;
+  position:absolute;right:18px;top:50%;margin-top:-9px;animation:spin .7s linear infinite}
+button.loading .spinner{display:block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.result{position:sticky;top:24px;text-align:center;padding-top:34px}
+.gauge{width:100%;max-width:320px;overflow:visible}
+.track,.fill{fill:none;stroke-width:14;stroke-linecap:round}
+.track{stroke:var(--line)}
+.fill{stroke:var(--muted);stroke-dasharray:282.74;stroke-dashoffset:282.74;
+  transition:stroke-dashoffset 1.3s cubic-bezier(.2,.8,.2,1),stroke .4s}
+.tick{stroke:var(--ink);stroke-width:2.5;stroke-linecap:round;opacity:0;transition:opacity .5s .9s}
+.readout{margin-top:-62px;position:relative}
+.pct{font-family:var(--serif);font-size:3.4rem;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.pct small{font-size:1.4rem;color:var(--muted);margin-left:2px}
+.sub{color:var(--muted);font-size:.85rem;margin-top:4px}
+.result h2{font-family:var(--serif);font-size:1.7rem;margin-top:26px;transition:color .4s}
+.result p{color:var(--muted);margin:8px auto 0;max-width:30ch;font-size:.95rem}
+.cutoff{padding-top:14px;margin-top:18px!important;border-top:1px solid var(--line);max-width:none!important}
+.result[data-state=low] .fill{stroke:var(--low)}.result[data-state=low] h2{color:var(--low)}
+.result[data-state=high] .fill{stroke:var(--high)}.result[data-state=high] h2{color:var(--high)}
+.result[data-state=error] h2{color:var(--high)}
+.result[data-state=low] .tick,.result[data-state=high] .tick{opacity:1}
+.result.pop h2,.result.pop #detail{animation:rise .5s .9s both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+@media (max-width:860px){.layout{grid-template-columns:1fr}.result{position:static;order:-1}}
+@media (max-width:480px){fieldset{grid-template-columns:1fr}.panel{padding:20px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
